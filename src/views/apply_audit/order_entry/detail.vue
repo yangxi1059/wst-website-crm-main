@@ -1,0 +1,151 @@
+<template>
+  <div class="mentor-pay">
+    <el-dialog :close-on-click-modal="false"
+      :title="'入账申请'"
+      :visible.sync="orderEntryDetailVisible"
+      width="1000px"
+      :before-close="handleClose"
+    >
+      <el-row class="mb10">
+        <el-col :span="4" class="_item-name">申请人</el-col>
+        <el-col :span="4" class="_item-value">{{refundData.apply.createByName}}</el-col>
+        <el-col :span="4" class="_item-name">申请状态</el-col>
+        <el-col :span="4" class="_item-value">{{refundData.apply.applyStatusName}}</el-col>
+        <el-col :span="4" class="_item-name">申请时间</el-col>
+        <el-col :span="4" class="_item-value">{{refundData.apply.createTime}}</el-col>
+      </el-row>
+      <span v-if="refundData.content">
+        <div style="width:100%;display:flex" v-for="(item,i) in refundData.content.text" :key="i">
+          <el-col style="flex:4" class="_item-name">{{item.label}}</el-col>
+          <el-col style="flex:20" class="_item-value">
+            <span :title="item.value">{{item.value || '无'}}</span>
+          </el-col>
+        </div>
+      </span>
+      <el-row class="mb10" v-if="refundData.content">
+        <span v-for="(item,i) in refundData.content.file" :key="i">
+          <el-col :span="4" class="_item-name">凭证 {{++i}}</el-col>
+          <el-col :span="4" class="_item-value">
+            <el-button @click="download(item.url)" size="mini">查看</el-button>
+          </el-col>
+        </span>
+      </el-row>
+      <!-- <el-row class="mb10">
+        <el-col :span="4" class="_item-name">金额</el-col>
+        <el-col :span="20" class="_item-value" v-text="totalRefund">{{}}</el-col>
+      </el-row>
+      <el-row class="mb10">
+        <el-col :span="4" class="_item-name">支付账户</el-col>
+        <el-col :span="20" class="_item-value" v-text="account">{{}}</el-col>
+      </el-row> -->
+      <el-row class="mb10">
+        <el-col :span="4" class="_item-name">审核人</el-col>
+        <el-col :span="20" class="_item-value" v-html="approval">{{}}</el-col>
+      </el-row>
+      <el-row class="mb10" v-if="copyTo">
+        <el-col :span="4" class="_item-name">抄送人</el-col>
+        <el-col :span="20" class="_item-value">{{copyTo}}</el-col>
+      </el-row>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+import { downloadFun } from '@/libs/file'
+import api from '@/api/vip.js'
+export default {
+  name: 'orderEntryDetail',
+  props: {
+    applyData: {
+      type: Object
+    },
+    orderEntryDetailVisible: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data () {
+    return {
+      widths: '230px',
+      rules: {
+        payType: [{ required: true, message: '必填', trigger: 'blur' }],
+        approverid: [{ required: true, message: '必填', trigger: 'blur' }]
+      },
+      refundData: {
+        apply: {},
+        content: {},
+        copyTo: [],
+        approval: [],
+        pay: {}
+      },
+      approval: '',
+      copyTo: '',
+      account: '',
+      totalRefund: '',
+      Myclass: ['', 'colorG', 'colorR'],
+      MyStatus: ['待审核', '已通过', '已拒绝']
+    }
+  },
+  watch: {
+    orderEntryDetailVisible: function (newData, oldData) {
+      if (newData) {
+        console.log('applyData详情yx4454455453435453', this.applyData)
+        api.getApplyDetailByApplyId(this.applyData.applyId).then(res => {
+          console.log('详情数据', res)
+          this.refundData = {
+            pay: res.data.pay,
+            apply: res.data.apply,
+            content: JSON.parse(res.data.apply.content),
+            copyTo: res.data.copyTo,
+            approval: res.data.approval
+          }
+          this.account = ''
+          this.account = this.refundData.content.info.payAccount
+          console.log(this.account, this.refundData.content.info.payAccount)
+          this.totalRefund = ''
+          this.totalRefund =
+            this.refundData.content.info.expenditureType +
+            this.refundData.content.info.expenditureAmount
+          this.approval = ''
+          res.data.approval.forEach(v => {
+            this.approval += `<p class='mb10'>${
+              v.approverName
+            } - <span class='${this.Myclass[v.approveStatus]}'>${
+              this.MyStatus[v.approveStatus]
+            } </span>  ${v.approveTime || ''} ${v.msg || ''}</p>`
+          })
+          this.copyTo = ''
+          res.data.copyTo.forEach(v => {
+            this.copyTo += v.copyToName + '; '
+          })
+        })
+      }
+    }
+  },
+  mounted () {},
+  methods: {
+    // 关闭
+    handleClose () {
+      // this.$refs.refundData.resetFields();
+      this.$emit('close')
+      this.refundData = {
+        apply: {},
+        content: {},
+        copyTo: [],
+        approval: [],
+        pay: {}
+      }
+      this.approval = ''
+      this.copyTo = ''
+      this.totalRefund = ''
+      this.account = ''
+    },
+    download (val) {
+      downloadFun(val)
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+</style>

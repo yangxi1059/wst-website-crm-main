@@ -1,0 +1,182 @@
+@import '~@/assets/style/unit/color.scss';
+
+// 工具类名统一前缀
+$prefix: d2;
+
+// 禁止用户选中 鼠标变为手形
+%unable-select {
+  user-select: none;
+  cursor: pointer;
+}
+
+// 填满父元素
+// 组要父元素 position: relative | absolute;
+%full {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+}
+.el-cascader .el-cascader__tags {
+  width:80%;
+  right: 1px;
+  top: 1px;
+  transform: unset;
+}
+.el-cascader .el-input__suffix {
+  z-index:100;
+}
+.el-collapse-item__header {
+  background-color: #eee!important;
+  border:1px solid #eee;
+  padding-left: 20px;
+}
+.colorB {
+  color: #FF8C00;
+}
+.colorG {
+  color: #67C23A;
+}
+
+.colorH {
+  color: #909399
+}
+.colorR {
+  color: #F56C6C;
+}
+.colorWST {
+  color: #89001d;
+}
+pre {
+  margin:  0px;
+}
+.mt20{
+  margin-top: 20px !important;
+}
+.mb20{
+  margin-bottom: 20px !important;
+}
+.mr20{
+  margin-right: 20px !important;
+}
+.ml20{
+  margin-left: 20px !important;
+}
+.ml100{
+  margin-left: 0px !important;
+}
+.drawerMargin{
+  margin: 0 20px !important;
+}
+.ml0{
+  margin-left: 0px !important;
+  margin-top: 5px;
+}
+.mt5{
+  margin-top: 5px;
+}
+p{
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+._item-name, ._item-value{
+  // margin: 0px 0px 5px 0;
+  min-height:21px;
+  font-size: 14px;
+}
+._item-name{
+  color: #000;
+  font-weight: 600;
+  padding-left: 20px;
+  margin: 10px 0;
+}
+._item-value{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin: 10px 0;
+  color: #FF8C00;
+}
+.search_page {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 998;
+  // background: #fff;
+  padding-bottom: 10px;
+
+  .el-button--medium {
+    padding: 10px 12px;
+  }
+}
+// follow up 数量标红
+.redBlod {
+  color: red;
+  font-weight: 600;
+}
+// flex 垂直水平居中
+%flex-center-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+%flex-center-col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+// 将元素模拟成卡片外观
+%card {
+  border: 1px solid #dddee1;
+  border-color: #e9eaec;
+  background: #fff;
+  border-radius: 4px;
+  font-size: 14px;
+  position: relative;
+}
+.handsontable td.htNoWrap{
+  width: 90%;
+  overflow: hidden;
+  font-size: 12px;
+  text-overflow:ellipsis;    
+  white-space: nowrap;
+  text-align: center;
+}
+.handsontable th, .handsontable td{
+  text-align: center;
+  font-size: 12px;
+}
+.handsontable th, .handsontable td .btn321{
+}
+.hot-button{
+  cursor: pointer;
+  white-space: nowrap;
+  color: #FF8C00;
+  border-color: transparent;
+  background: transparent;
+  display: inline-block;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  height: 20px;
+  text-align: center;
+}
+.clearfix::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.clearfix {
+  zoom: 1;
+}
+
+.d2_container{
+  width:100%;
+  height:100%;
+}
